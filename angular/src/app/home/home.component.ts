@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileDropdownComponent } from '../profile-dropdown/profile-dropdown.component';
 import { SearchComponent } from '../search/search.component';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProfileDropdownComponent, SearchComponent],
+  imports: [CommonModule, ProfileDropdownComponent, SearchComponent, SidebarComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
