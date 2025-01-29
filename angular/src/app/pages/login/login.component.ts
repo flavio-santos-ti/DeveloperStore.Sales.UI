@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent {
   password: string = '';
   passwordVisible: boolean = false; // This variable is used to toggle the visibility of the password input field
 
-  constructor(private router: Router, library: FaIconLibrary) {
+  constructor(private router: Router, library: FaIconLibrary, private http: HttpClient) {
     library.addIcons(faEye, faEyeSlash);
   }
 
@@ -25,11 +26,25 @@ export class LoginComponent {
     this.passwordVisible = !this.passwordVisible;
   }
   
-  onSubmit(): void {
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
 
-    // Here you can implement any validation logic, but for now, the redirection will be don unconditionally.
-    this.router.navigate(['/home']);
+  onSubmit(): void {
+    const loginData = {
+      username: this.username,
+      password: this.password
+      
+    };
+  
+    this.http.post<{ token: string }>('http://localhost:5016/api/Auth/Login', loginData)
+    .subscribe({
+      next: (response) => {
+        console.log('Login successful, token:', response.token);
+        localStorage.setItem('authToken', response.token);
+        this.router.navigate(['/home']);
+      },
+      error: (error) => {
+        console.error('Login failed:', error);
+        // Exibir mensagem de erro ao usuário
+      }
+    });
   }
 }
