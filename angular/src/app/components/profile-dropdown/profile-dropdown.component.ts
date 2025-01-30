@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,9 +10,15 @@ import { CommonModule } from '@angular/common';
 })
 export class ProfileDropdownComponent {
   isDropdownOpen = false;
+  username: string = '';
 
   @Output() profileClicked = new EventEmitter<void>();
   @Output() signOutClicked = new EventEmitter<void>();
+
+  ngOnInit(): void {
+    this.username = localStorage.getItem('username') || 'Tom Cook'; // Usar o nome de usuário ou 'Tom Cook' como fallback
+  }
+
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -21,7 +27,7 @@ export class ProfileDropdownComponent {
   closeDropdown(): void {
     this.isDropdownOpen = false;
   }
-
+  
   onProfileClick(): void {
     this.profileClicked.emit();
     this.closeDropdown();
