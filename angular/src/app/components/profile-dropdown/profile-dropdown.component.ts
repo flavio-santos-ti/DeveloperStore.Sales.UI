@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-profile-dropdown',
@@ -8,15 +9,24 @@ import { CommonModule } from '@angular/common';
   templateUrl: './profile-dropdown.component.html',
   styleUrls: ['./profile-dropdown.component.css'],
 })
-export class ProfileDropdownComponent {
+export class ProfileDropdownComponent implements OnInit {
   isDropdownOpen = false;
   username: string = '';
+  firstname: string = '';
 
   @Output() profileClicked = new EventEmitter<void>();
   @Output() signOutClicked = new EventEmitter<void>();
 
+  constructor(private userService: UserService) {}
+
   ngOnInit(): void {
-    this.username = localStorage.getItem('username') || 'Tom Cook'; // Usar o nome de usuário ou 'Tom Cook' como fallback
+    const user = this.userService.getUser();
+    if (user) {
+      this.firstname = user.firstname; 
+      this.username = user.username;      
+    } else {
+      this.username = 'Default';
+    }
   }
 
 
