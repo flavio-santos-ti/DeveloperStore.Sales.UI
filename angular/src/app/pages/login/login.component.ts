@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -9,7 +9,6 @@ import { AlertComponent } from '../../components/alert/alert.component';
 import { UserService } from '../../services/user.service';
 import { UserResponse } from '../../models/user-response.model';
 import { User } from '../../models/user.model';
-
 
 @Component({
   selector: 'app-login',
@@ -28,7 +27,13 @@ export class LoginComponent {
   errorMessage: { title: string, details: string[] } | null = null;
   user: User | null = null; // Variável para armazenar os dados do usuário
   
-  constructor(private router: Router, library: FaIconLibrary, private http: HttpClient, private userService: UserService) {
+  constructor(
+    private router: Router, 
+    library: FaIconLibrary, 
+    private http: HttpClient, 
+    private userService: UserService,
+    private cdr: ChangeDetectorRef) 
+  {
     library.addIcons(faEye, faEyeSlash, faSpinner);
   }
 
@@ -39,10 +44,11 @@ export class LoginComponent {
   togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
   }
-  
 
-  onSubmit(): void {
+  onSubmit(): void 
+  {
     this.isLoading = true; // Ativando o spinner
+    this.cdr.detectChanges();
 
     const loginData = {
       username: this.username,
@@ -97,29 +103,53 @@ export class LoginComponent {
               console.error('Failed to fetch user data:', error);
               console.error('Status:', error.status);
               console.error('Error Message:', error.error);
-              // Set the error message with the standar structure (title and details).
-              this.errorMessage = {
-                title: 'Error',
-                details: error.error.message || ['Failed to fetch user data. Please try again.']
-              };            
+
+              // Verifique se o erro é de conexão (status === 0)
+              if (error.status === 0) {
+                this.errorMessage = {
+                  title: 'Connection Error',
+                  details: ['Unable to connect to the server. Please check your connection.']
+                };
+              } else {
+                // Outros erros
+                const errorMessage = error.error.message || 'An unexpected error occurred. Please try again.';
+                this.errorMessage = {
+                  title: 'Login Failed',
+                  details: [errorMessage]
+                };
+              }
+
             }
           });
 
-        this.isLoading = false; 
+        this.isLoading = false;
+        this.cdr.detectChanges(); 
       },
       error: (error) => {
-        console.error('Login failed:', error);
+        console.error('Login failed x:', error);
         console.log('Error message:', error.error.message);
         
-        const errorMessage = error.error.message || 'An unexpected error occurred. Please try again.';
-        this.errorMessage = {
-          title: 'Login Failed',
-          details: [errorMessage] 
-        };        
+        // Verifique se o erro é de conexão (status === 0)
+        if (error.status === 0) {
+          this.errorMessage = {
+            title: 'Connection Error',
+            details: ['Unable to connect to the server. Please check your connection.']
+          };
+        } else {
+          // Outros erros
+          const errorMessage = error.error.message || 'An unexpected error occurred. Please try again.';
+          this.errorMessage = {
+            title: 'Login Failed',
+            details: [errorMessage]
+          };
+        }
+
         this.isLoading = false; 
+        this.cdr.detectChanges();
       },
        complete: () => {
-        this.isLoading = false; 
+        this.isLoading = false;
+        this.cdr.detectChanges(); 
       }      
     });
   }

@@ -1,0 +1,11 @@
+/* Ajuste o alinhamento do spinner */
+button span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ajuste o tamanho do spinner */
+mat-spinner {
+  margin-left: 8px; /* Espaçamento entre o texto e o spinner */
+}
