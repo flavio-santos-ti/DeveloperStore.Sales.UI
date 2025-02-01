@@ -1,4 +1,4 @@
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+<div class="flex min-h-screen flex-col justify-start  px-6 py-14 lg:px-8">
   <!-- Alert Component -->
   <app-alert [message]="errorMessage" (close)="clearAlert()"></app-alert>
   
@@ -10,16 +10,16 @@
       alt="Your Company"
     />
 
-    <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
+    <h2 class="mt-5 text-center text-2xl font-bold tracking-tight text-gray-900">
       Welcome to My Example Project
     </h2>
   </div>
 
 
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form (ngSubmit)="onSubmit()" class="space-y-6">
+  <div class="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
+    <form (ngSubmit)="onSubmit()">
       <!-- Username -->
-      <div>
+      <div class="mt-6">
         <label for="username" class="block text-sm font-medium text-gray-900">
           Account Name
         </label>
@@ -33,35 +33,40 @@
             required
             autocomplete="username"
             placeholder="Enter your account name"
-            class="block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
+            class="block w-full rounded-md border border-gray-300 bg-indigo-50 px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
           />
         </div>
       </div>
 
       <!-- Password -->
-      <div class="relative">
-        <input
-          [type]="passwordVisible ? 'text' : 'password'"
-          id="password"
-          name="password"
-          [(ngModel)]="password"
-          (input)="clearAlert()"
-          required
-          autocomplete="current-password"
-          placeholder="Enter your password"
-          class="block w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
-        />
-        <button
-          type="button"
-          (click)="togglePasswordVisibility()"
-          class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-indigo-600"
-        >
-          <fa-icon [icon]="passwordVisible ? 'eye-slash' : 'eye'"></fa-icon>
-        </button>
+      <div class="mt-6">
+        <label for="password" class="block text-sm font-medium text-gray-900">
+          Password
+        </label>        
+        <div class="mt-2 relative">
+          <input
+            [type]="passwordVisible ? 'text' : 'password'"
+            id="password"
+            name="password"
+            [(ngModel)]="password"
+            (input)="clearAlert()"
+            required
+            autocomplete="current-password"
+            placeholder="Enter your password"
+            class="block w-full rounded-md border border-gray-300 bg-indigo-50 px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
+          />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-indigo-600"
+          >
+            <fa-icon [icon]="passwordVisible ? 'eye-slash' : 'eye'"></fa-icon>
+          </button>
+        </div>
       </div>
 
       <!-- Submit Button -->
-      <div>
+      <div class="mt-12">
         <button
           type="submit"
           [disabled]="isLoading"
@@ -69,7 +74,23 @@
         >
           <span *ngIf="!isLoading">Sign In</span>
           <span *ngIf="isLoading">
-            <fa-icon [icon]="'spinner'" [spin]="true"></fa-icon>
+            
+          <!-- Spinner do Tailwind -->
+          <svg class="mr-3 size-5 animate-spin text-white" viewBox="0 0 24 24">
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>            
             Carregando...
           </span>
         </button>

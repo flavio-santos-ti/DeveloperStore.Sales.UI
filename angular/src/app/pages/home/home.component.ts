@@ -4,11 +4,12 @@ import { ProfileDropdownComponent } from '../../components/profile-dropdown/prof
 import { SearchComponent } from '../../components/search/search.component';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { NotificationBellComponent } from '../../components/notification-bell/notification-bell.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProfileDropdownComponent, SearchComponent, SidebarComponent, NotificationBellComponent],
+  imports: [CommonModule, ProfileDropdownComponent, SearchComponent, SidebarComponent, NotificationBellComponent, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

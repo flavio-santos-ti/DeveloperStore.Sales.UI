@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 bootstrapApplication(AppComponent, {
   providers: [provideRouter(routes),
-    importProvidersFrom(FormsModule, HttpClientModule), // Adding FormsModule to the app
+    importProvidersFrom(FormsModule, HttpClientModule), provideAnimationsAsync(), // Adding FormsModule to the app
   ],
 }).catch((err) => console.error(err));
